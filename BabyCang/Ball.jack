@@ -1,0 +1,74 @@
+//handling ball 
+
+class Ball {
+    
+    field int x, y, r, step, steplimit;
+    field int dir; // 1 == left 2 == right
+
+    constructor Ball new(int ax,int ay,int ar, int adir, int astep){
+        let x = ax;
+        let y = ay;
+        let r = ar;
+        let dir = adir;
+        let step = astep;
+        do draw ();
+        return this;
+    }
+
+    method void erase () {
+        do Screen.setColor (false);
+        do Screen.drawCircle(x,y,r);
+        return;
+    }
+ 
+    method void draw (){
+        do Screen.setColor (true);
+        do Screen.drawCircle(x,y,r);
+        return;
+    }
+ 
+    method void move(){
+        let step = step + 1;
+        if (step = 112 & dir = 1 ) {
+            let step = 0;
+            let dir = 2;
+        }
+        if (step = 112 & dir = 2) {
+            let step = 0;
+            let dir = 1;
+        }
+        do Screen.setColor (false);
+        do Screen.drawCircle(x,y,r);
+        if (dir = 1){
+            let x = x - 4;
+        }
+        else{
+            if(dir = 2){
+                let x = x + 4;
+            }
+        }
+        do Screen.setColor (true);
+        do Screen.drawCircle(x,y,r);
+        return;
+    }
+
+    method int gety(){
+        return y;
+    }
+
+    method int getx(){
+        return x;
+    }
+
+    method int getr(){
+        return r;
+    }
+
+    method void dispose(){
+        let steplimit = steplimit + 1;
+        if (step = steplimit){
+        do Memory.deAlloc(this);
+        }
+        return;
+    }
+}

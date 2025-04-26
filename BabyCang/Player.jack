@@ -1,0 +1,115 @@
+/*Player character*/
+
+class Player {
+    field int x, y, x2, y2; /// location, width and length of player
+    field int kbd, dialog;
+
+    constructor Player new (int ax, int ay, int ax2, int ay2){
+        let x = ax;
+        let y = ay;
+        let x2 = ax2;
+        let y2 = ay2;
+        let kbd = 0;
+        do draw ();
+        return this;
+    }
+ 
+
+    method void draw (){   // renders player
+        do Screen.setColor(true);
+        do Screen.drawRectangle (x,y,x2,y2);
+        return;
+    }
+  
+    method void move (int akbd){       //// controls movment
+        var int xdir, ydir;  /// -4 = left 4 = right
+        let kbd = akbd;
+        let xdir = 0; let ydir = 0;
+        if ((kbd = 132) & ~(x2 = 512)){
+            let xdir = 3;
+        }
+        if ((kbd = 130) & ~(x = 0)){
+            let xdir = -3;
+        }
+        if (kbd = 131){
+            let ydir = -3;
+        }
+        do Screen.setColor(false);
+        do Screen.drawRectangle (x,y,x2,y2);
+        let x = x + xdir; let x2 = x2 + xdir;
+        let y = y + ydir; let y2 = y2 + ydir;
+        return;
+    
+    }
+
+    method int fall (int jumpcount){       // gravity engine
+       if (~(y2=74) | (x>481)){
+        if (~(y2=110) | (x2<30)){
+         if (~(y2=146) | (x>481)){
+          if (~(y2=182) | (x2<30)){
+           if (~(y2=218) | (x>481)){
+            if (~(y2=254)){
+        do Screen.setColor(false);
+        do Screen.drawRectangle (x,y,x2,y2);
+        let y = y + 3;
+        let y2 = y2 + 3;
+       }else {
+        let jumpcount = 0;
+       }}else {
+        let jumpcount = 0;
+       }}else {
+        let jumpcount = 0;
+       }}else {
+        let jumpcount = 0;
+       }}else {
+        let jumpcount = 0;
+       }}else {
+        let jumpcount = 0;
+       }
+        
+        return jumpcount;
+    }
+
+    method int dialog() {
+        if (y2 = 254){let dialog = 5;}
+        if (y2 = 218){let dialog = 4;}
+        if (y2 = 182){let dialog = 3;}
+        if (y2 = 146){let dialog = 2;}
+        if (y2 = 110){let dialog = 1;}
+        if (y2 = 74){let dialog = 0;}
+        return dialog;
+
+    }
+
+    method boolean gg (int bx, int by, int br){  /// controls hit box 
+        if (x2 > (bx - br - 1)){
+            if (x2 < (bx + br + 1)){
+                if ((y2 > (by - br))){
+                    if ((y2 < (by + br + 3))){
+            return true;
+        }}}}
+        if (x > (bx - br - 1)){
+            if (x < (bx + br + 1)){
+                if ((y2 > (by - br))){
+                    if ((y2 < (by + br + 3))){
+            return true;
+        }}}}
+        return false;
+    }
+
+    method void reset(){    //// resets position after game over
+        do Screen.setColor(false);
+        do Screen.drawRectangle (x,y,x2,y2);
+        let x = 0;
+        let y = 66;
+        let x2 = 8;
+        let y2 = 74;
+        do draw ();
+        return;
+    }
+
+    method int gety2(){
+        return y2;
+    }
+
+}

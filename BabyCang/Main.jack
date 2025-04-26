@@ -1,0 +1,12 @@
+/* Main function for the BABYCANG video game to be ran on HACK */
+
+class Main {
+
+    function void main () { //creates game
+        var BabyCang game;
+        let game = BabyCang.newgame();
+        do game.run();
+        return;
+    }
+}
+        

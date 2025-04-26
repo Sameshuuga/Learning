@@ -1,0 +1,191 @@
+//Runs the game
+
+class BabyCang{
+    static BabyCang instance;
+    field Array balllist, finalballs;
+    field Ball ball;
+    field Player player;
+    static int length, finallength, tick;
+    static boolean playing;
+ 
+
+    function BabyCang newgame(){
+        let instance = BabyCang.new();
+        return instance;
+    }
+   
+    constructor BabyCang new (){
+        do Screen.clearScreen();
+        do stage.stage();
+        let player = Player.new(0,66,8,74);
+        let length = 10;
+        let finallength = 4;
+        let finalballs = Array.new(finallength);
+        let balllist = Array.new(length);
+        let balllist[0] = Ball.new(30,71,3,2,0);
+        let balllist[1] = Ball.new(30,107,3,2,0);let balllist[2] = Ball.new(480,107,3,1,0);
+        let balllist[3] = Ball.new(30,143,3,2,0);let balllist[4] = Ball.new(480,143,3,1,0);let balllist[5] = Ball.new(226,143,3,2,48);
+        let balllist[6] = Ball.new(30,179,3,2,0);let balllist[7] = Ball.new(480,179,3,1,0);let balllist[8] = Ball.new(150,179,3,2,30);let balllist[9] = Ball.new(300,179,3,1,45);
+         
+        let tick = 0;
+        let playing = true;
+        return this;
+    }   
+
+    /* game engin */
+
+    method void run() {
+    var int i, i2, kbd, bx, by, br, jumpcount, restart, dialog, py2, brrrrr, ballcount, bn;
+    var boolean gg;
+    var String a, b, c, d, e, f;
+    let ballcount = 0;
+    let jumpcount = 0;
+    let a = String.new(50);let b = String.new(50);let c = String.new(50);let d = String.new(50);let e = String.new(50);let f = String.new(50);
+    let a = "BabyCang: 'Huh, who goes there'";
+    let b = "BabyCang: 'I know you are up there'";
+    let c = "BabyCang: 'Trust me you don't want to come any lower'";
+    let d = "BabyCang: 'I'm telling you you can't handle the smoke'";
+    let e = "BabyCang: 'Ok, you asked for it' *click clack*";
+    let f = "BabyCang: 'Brrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr'";
+
+    //// Start of loop////
+    while (playing = true){
+            let i = 0;
+            let i2 = 0;
+            let dialog = player.dialog();
+            let kbd = Keyboard.keyPressed();
+            do Sys.wait (25);
+        if (tick < 25){
+            let tick = tick + 1;
+        }
+        else {
+            let tick = 0;
+        }
+ 
+        //// dialog
+        if (dialog = 0){do Output.moveCursor (1,5); do Output.printString(a);}
+        if (dialog = 1){do stage.cleartext(); do Output.moveCursor (1,5); do Output.printString(b);}
+        if (dialog = 2){do stage.cleartext(); do Output.moveCursor (1,5); do Output.printString(c);}
+        if (dialog = 3){do stage.cleartext(); do Output.moveCursor (1,5); do Output.printString(d);}
+        if (dialog = 4){do stage.cleartext(); do Output.moveCursor (1,5); do Output.printString(e);}
+        if (dialog = 5){do stage.cleartext(); do Output.moveCursor (1,5); do Output.printString(f);}
+
+        do BabyCang.cangrun();
+  
+        /// Player handling///
+        if (kbd = 131){
+            if (~(jumpcount = 7)){
+            let jumpcount = jumpcount + 1;
+            }
+            if (jumpcount = 7){
+                let kbd = 0;
+            }
+        }
+        do player.move(kbd);
+        if (~(kbd = 131)){
+            let jumpcount = player.fall(jumpcount);
+        }
+        let py2 = player.gety2();
+        do player.draw();
+
+
+        // ball handling //
+        while (i < length){
+        let ball = balllist[i];
+        do ball.move();
+        let bx = ball.getx();
+        let by = ball.gety();
+        let br = ball.getr();
+        let gg = player.gg(bx, by, br);
+        if (gg = true){
+            let playing = false;
+            }
+        let i = i + 1;
+        }
+////////////////Final stage//////////////////////////////////////////
+        if (py2 = 254){
+            let brrrrr = 1;
+        }
+        if (brrrrr = 1){
+            if (tick = 10){ /// spawns new ball
+                let finalballs[ballcount] = Ball.new(40,251,3,2,0);
+                let ballcount = ballcount + 1;
+                if (ballcount = finallength){
+                    let ballcount = 0;
+                }
+                if (bn < finallength){
+                    let bn  = bn + 1;
+                } 
+            }
+           
+            while (i2 < bn){
+                let ball = finalballs[i2];
+                do ball.move();
+                let bx = ball.getx();
+                let by = ball.gety();
+                let br = ball.getr();
+                let gg = player.gg(bx, by, br);
+                if (gg = true){
+                    let playing = false;
+                    let brrrrr = 0;
+                    do stage.clearfloor();
+                }
+                let i2 = i2 + 1;
+                do ball.dispose();
+            }
+        }
+//////////////////////////////////////////////////////////////
+        // game over play agian?//
+        if (playing = false){
+            do stage.cleartext();
+            do Output.moveCursor (1,5);
+            if (dialog = 0){do Output.printString ("BabyCang: 'Must have been the wind'"); do Output.println(); do Output.printString("         press Left to retry.");}
+            if (dialog = 1){do Output.printString ("BabyCang: 'Hello? Are you still there'"); do Output.println(); do Output.printString("         press Left to retry.");}
+            if (dialog = 2){do Output.printString ("BabyCang: 'See, told you'"); do Output.println(); do Output.printString("         press Left to retry.");}
+            if (dialog = 3){do Output.printString ("BabyCang: 'Phew, you had me worried'"); do Output.println(); do Output.printString("         press Left to retry.");}
+            if (dialog = 4){do Output.printString ("BabyCang: 'must have been the wind'"); do Output.println(); do Output.printString("         press Left to retry.");}
+            if (dialog = 5){do Output.printString ("BabyCang: 'The ratatatat never fails'"); do Output.println(); do Output.printString("         press Left to retry.");}
+            do Sys.wait (500);
+            while (~(restart = 130)){
+                let restart = Keyboard.readChar();
+            }
+            do player.reset();
+            do stage.cleartext();
+            let playing = true;
+            let restart = 0;
+        }
+
+        }
+    return;
+    }
+
+//////////////////////// game functions /////////////////////////////////
+    function void cangrun (){ // cangs movement
+     if (tick < 5){
+                do stage.clear();
+                do stage.babycang0(7265);
+            }
+            else { if (tick < 9){
+                do stage.clear();
+                do stage.babycang1(7265);
+            }
+            else { if (tick < 13){
+                do stage.clear();
+                do stage.babycang2(7265);
+            }
+            else { if (tick < 17){
+                do stage.clear();
+                do stage.babycang3(7266);
+            }
+            else { if (tick < 21){
+                do stage.clear();
+                do stage.babycang4(7266);
+            }
+            else { if (tick < 25){
+                do stage.clear();
+                do stage.babycang5(7266);
+            }}}}}}
+            return;
+    }
+
+}
