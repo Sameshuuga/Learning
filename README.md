@@ -1,1 +1,1 @@
-print ('Practcie'*100000) 
+I made this repository while working through Elements of Computer Programing. I didn't know how repositories worked at the time, so it's more like a file system where each branch is a different part of the project.
